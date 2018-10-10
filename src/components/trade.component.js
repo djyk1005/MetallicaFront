@@ -41,33 +41,33 @@ return( 
     
 <tr onClick={this._onButtonClick.bind(this)} >
 
-<td scope="col"> {this.props.postData.Tradedate}</td>
-<td>{this.props.postData.Commodity}</td>
-<td>{this.props.postData.Side}</td>
-<td>{this.props.postData.Qty}</td>
+<td scope="col"> {this.props.postData.date}</td>
+<td>{this.props.postData.commodity}</td>
+<td>{this.props.postData.side}</td>
+<td>{this.props.postData.quantity}</td>
 <td>{this.props.postData.price}</td>
-<td>{this.props.postData.Counterparty}</td>
-<td>{this.props.postData.Location}</td>
-<td>{this.props.postData.TradeStatus}</td>
+<td>{this.props.postData.counterParty}</td>
+<td>{this.props.postData.location}</td>
+<td>{this.props.postData.status}</td>
 <Popup
 trigger={<button className="button"> View Trade </button>}
 modal>
 {/* // closeOnDocumentClick */}
 <form >
 <span>
-<h1> TRADE ID: </h1>
-Trade Date : {this.props.postData.Tradedate} <br />
-Commodity : {this.props.postData.Commodity} <br />
-Side : {this.props.postData.Side} <br />
-CounterParty: {this.props.postData.Counterparty} <br />
+<h1> TRADE ID:{this.props.postData.id} </h1>
+Trade Date : {this.props.postData.date} <br />
+Commodity : {this.props.postData.commodity} <br />
+Side : {this.props.postData.side} <br />
+CounterParty: {this.props.postData.counterParty} <br />
 Price : {this.props.postData.price} <br />
-Quantity : {this.props.postData.Qty} <br />
-Location : {this.props.postData.Location} <br /> 
+Quantity : {this.props.postData.quantity} <br />
+Location : {this.props.postData.location} <br /> 
 
 </span>
 </form> 
 <Popup
-trigger={<button type="button" class="btn" onClick={this._onButtonClick} > Edit </button>}
+trigger={<button type="button" className="btn" onClick={this._onButtonClick} > Edit </button>}
 modal>
 
 <EditTradeComponent

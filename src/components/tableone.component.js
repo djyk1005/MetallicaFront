@@ -78,26 +78,22 @@ export default class TradeTable extends Component {
     };
 
   }
-    // componentDidMount() {
-    //     fetch('url for fetching trade table')
-    //     .then(res => res.json())
-    //     .then(data=> {
-    //         this.setState({tradedata: data});
-    //     });
+    componentDidMount() {
+  
+        // fetch('url for fetching trade table')
+        // .then(res => res.json())
+        // .then(data=> {
+        //     this.setState({tradedata: data});
+        // });
         
 
 
-    // }
+    }
 
  
 
   render() {
 
- 
-
-    console.log(
-
-      this.state.tradedata);
 
 
  
@@ -107,9 +103,9 @@ export default class TradeTable extends Component {
 
  
       
-      <div class="container">
+      <div className="container">
 
-        <table class="table table-striped">
+        <table className="table table-striped">
 
           <thead>
 
@@ -140,7 +136,7 @@ export default class TradeTable extends Component {
 
             {
 
-              this.state.tradedata.map(function(p, i){
+              this.props.trades.map(function(p, i){
 
                 return <TradeComponent
                   postData={p}

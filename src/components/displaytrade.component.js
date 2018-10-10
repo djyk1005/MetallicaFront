@@ -7,14 +7,10 @@ export default class DisplayTradeComponent extends Component {
  
     constructor(){
  
-     
         super();
        
         this.state = { editComponent:false}
          
-        
-          
-            console.log(this.state.trade); 
     }
     deleteTrade(){
         console.log("inside Delete")
@@ -30,7 +26,7 @@ export default class DisplayTradeComponent extends Component {
     
  
     render() {
-        console.log("inside display trade")
+        
  
         return (
             <div>
@@ -50,11 +46,11 @@ export default class DisplayTradeComponent extends Component {
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-               <button type="button" class="btn btn-default btn-sm">
-                    <span class="glyphicon glyphicon-trash" onClick={this.deleteTrade.bind(this)}></span> 
+               <button type="button" className="btn btn-default btn-sm">
+                    <span className="glyphicon glyphicon-trash" onClick={this.deleteTrade.bind(this)}></span> 
                 </button> &nbsp;          
-                <button type="button" class="btn btn-default btn-sm">
-                    <span class="glyphicon glyphicon-pencil" onClick={this.editTrade.bind(this)}></span> 
+                <button type="button" className="btn btn-default btn-sm">
+                    <span className="glyphicon glyphicon-pencil" onClick={this.editTrade.bind(this)}></span> 
                 </button>
                 <h2>Trade ID : {this.props.trade.tradeid}</h2>
                 Trade&nbsp;Date&nbsp;&nbsp;&nbsp;&nbsp;:{this.props.trade.Tradedate} <br />

@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import CreateTradeComponent from './createtrade.component'
+import TableOneComponent from './tableone.component';
 
  
 
@@ -9,13 +11,13 @@ export default class SearchComponent extends Component {
         super();
      
         this.state = {
-          location: ["location 1","location2","location3" ,"locatsjidu"],
-          commodity:["com1","com2","com3"],
-          counterParty:["counter1","counter2"]
-     
+        location: [],
+        commodity:[],
+        counterParty:[],
+        trades:[]   
         };
         this.startDate = React.createRef();
-       this.endDate = React.createRef();
+        this.endDate = React.createRef();
         this.commodityName = React.createRef();
         this.buyVal = React.createRef();
         this.sellVal = React.createRef();
@@ -23,70 +25,88 @@ export default class SearchComponent extends Component {
         this.locationName=React.createRef();
      
       }
-    //   componentDidMount() {
-    //     fetch('url for location')
-    //     .then(res => res.json())
-    //     .then(data=> {
-    //         this.setState({location: data});
-    //     });
-    //     fetch('url for commodity')
-    //     .then(res => res.json())
-    //     .then(data=> {
-    //         this.setState({commodity: data});
-    //     });
-    //     fetch('url for counterparty')
-    //     .then(res => res.json())
-    //     .then(data=> {
-    //         this.setState({counterParty: data});
-    //     });
-
-
-    // }
+      componentDidMount() {
+        fetch('http://localhost:8083/add', {
+            method: 'POST'
+            });
+        fetch('http://localhost:8083/locations')
+        .then(res => res.json())
+        .then(data=> {
+            this.setState({location: data});
+        });
+        fetch('http://localhost:8083/commodities')
+        .then(res => res.json())
+        .then(data=> {
+            this.setState({commodity: data});
+        });
+        fetch('http://localhost:8083/counterparties')
+        .then(res => res.json())
+        .then(data=> {
+            this.setState({counterParty: data});
+        });
+        fetch('http://localhost:8081/trade/findAll')
+        .then(res => res.json())
+        .then(data=> {
+            this.setState({trades: data});
+        });
+        
+    } 
     cleardata(e){
         e.preventDefault();
-        console.log("inside clear")
         document.getElementById("search_entry").reset();
 
     }
 
     searchdata(e){
         e.preventDefault();
-        console.log("inside search");
+        let startDate = this.startDate.current.value;
+        let endDate = this.endDate.current.value;
+        let comm = this.commodityName.current.value;
+        let cP = this.counterPartyName.current.value; 
+        let loc = this.locationName.current.value;   
+        fetch('http://localhost:8081/trade/search', {
+            method: 'POST',
+            body: JSON.stringify({
+                startDate:(startDate === "")?null:startDate,
+                endDate:(endDate === "")?null:endDate, 
+                comm:(comm === "")?null:comm,
+                counterParty:(cP === "")?null:cP, 
+                loc:(loc === "")?null:loc,
+                }),
+            headers: {
+                "Content-Type": "application/json"
+            },
+        }).then(res=> res.json())
+        .then(data=> {
+            this.setState({trades: data});
+        });
+        
 
 
     }
 
     createCommodityItems() {
-        console.log("inside create")
         let items = [];         
-        for (let i = 0; i < this.state.commodity.length; i++) { 
-            console.log(this.state.commodity[i]);            
-             items.push(<option key={i} value={this.state.commodity[i]}>{this.state.commodity[i]}</option>);   
+        for (let i = 0; i < this.state.commodity.length; i++) {            
+             items.push(<option key={i} value={this.state.commodity[i].name}>{this.state.commodity[i].name}</option>);   
             
         }
         return items;
     }  
    
-   onDropdownSelected(e) {
-       console.log("THE VAL", e.target.value);
-      
-   }
+ 
    createLocationItems() {
-    console.log("inside create")
     let items = [];         
-    for (let i = 0; i < this.state.location.length; i++) { 
-                  
-         items.push(<option key={i} value={this.state.location[i]}>{this.state.location[i]}</option>);   
+    for (let i = 0; i < this.state.location.length; i++) {   
+         items.push(<option key={i} value={this.state.location[i].name}>{this.state.location[i].name}</option>);   
         
     }
     return items;
 }  
 createCounterPartyItems() {
-    console.log("inside create")
     let items = [];         
-    for (let i = 0; i <this.state.counterParty.length; i++) { 
-             
-         items.push(<option key={i} value={this.state.counterParty[i]}>{this.state.counterParty[i]}</option>);   
+    for (let i = 0; i <this.state.counterParty.length; i++) {  
+         items.push(<option key={i} value={this.state.counterParty[i].id}>{this.state.counterParty[i].id}</option>);   
       
     }
     return items;
@@ -106,13 +126,14 @@ TDate() {
 
     render() {
         return (
+            <div>
         <form id="search_entry" action="#">
 
-            <div class="container-fluid">
+            <div className="container-fluid">
 
-                <div class="panel panel-default">
+                <div className="panel panel-default">
 
-                    <div class="panel-body">
+                    <div className="panel-body">
 
                         <div className="row">
 
@@ -135,7 +156,7 @@ TDate() {
 
                             <div >
 
-                                    <select ref={this.commodityName} name="Commodity" id="wgtmsr"  onChange={this.onDropdownSelected} >
+                                    <select ref={this.commodityName} name="Commodity" id="wgtmsr" >
                                     <option ></option>
                                      {this.createCommodityItems()}                                     
                                      </select>
@@ -151,13 +172,13 @@ TDate() {
 
                                 <div>
 
-                                    <label class="checkbox-inline">
+                                    <label className="checkbox-inline">
 
                                         <input ref={this.buyVal} type="checkbox" value=""  />Buy
 
                                     </label>
 
-                                    <label class="checkbox-inline">
+                                    <label className="checkbox-inline">
 
                                         <input ref={this.sellVal} type="checkbox" value="" />Sell
 
@@ -175,7 +196,7 @@ TDate() {
 
                         <div >
 
-                            <select ref={this.counterPartyName} onChange={this.onDropdownSelected}>
+                            <select ref={this.counterPartyName} >
                             <option ></option>
 
                             {this.createCounterPartyItems()}                                     
@@ -192,7 +213,7 @@ TDate() {
 
                              <div >
 
-                            <select ref={this.locationName} onChange={this.onDropdownSelected} >
+                            <select ref={this.locationName}  >
                             <option ></option>
                             {this.createLocationItems()}                                     
                             </select>
@@ -224,6 +245,11 @@ TDate() {
             </div>
 
             </form>
+            <div className="something">
+            <TableOneComponent trades={this.state.trades}/>
+            <CreateTradeComponent />
+             </div>
+            </div>
 
 
 

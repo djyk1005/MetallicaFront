@@ -1,38 +1,32 @@
 import React, { Component } from 'react';
 import StockDetails from './stock.details.components';
 import Marquee from 'react-smooth-marquee';
-//import axios from 'axios';
 
 export default class MarketDetails extends Component {
     constructor(){
         super();
-        this.state={mydata: [{"identifier":"ID1","price":"1000"},{"identifier":"ID2","price":"2000"},{"identifier":"ID1","price":"1000"},{"identifier":"ID2","price":"2000"},{"identifier":"ID1","price":"1000"},{"identifier":"ID2","price":"2000"},{"identifier":"ID1","price":"1000"},{"identifier":"ID2","price":"2000"}]}
-        // axios.post('http://localhost:8080/marketdata/data');
-        // var request = axios.get('http://localhost:8080/marketdata/data');
+        this.state={mydata: []}
 
     }
-    // fetchMarketData(){
-    //     // fetch('url for fetching market vdata')
-    //     //     .then(res => res.json())
-    //     //     .then(data=> {
-    //     //         this.setState({mydata: data});
-    //     //     });
+    
+    fetchMarketData(){
+        fetch('http://localhost:8084/data')
+            .then(res => res.json())
+            .then(data=> {
+                this.setState({mydata: data});
+            });
 
-    // }
-    //  componentDidMount() {
-    //     this.fetchMarketData.bind(this);
-    //     setInterval(this.fetchMarketData, 10000);
+    }
+     componentDidMount() {
+        fetch('http://localhost:8084/data', {
+            method: 'POST'
+            });
+        this.fetchMarketData();
+        setInterval(this.fetchMarketData.bind(this), 10000);
         
 
-
-    //  }
+     }
      
-
-
- 
- 
-
-
 
     render() {
         var marketDataList = this.state.mydata.map(
@@ -44,8 +38,6 @@ export default class MarketDetails extends Component {
                     {...this.props} />
             }
         )
-
-        console.log(marketDataList);
 
         return <div className='simple-marquee-container'>
         

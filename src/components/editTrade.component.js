@@ -13,9 +13,9 @@ export default class EditTradeComponent extends Component {
         this.state = {
             date: date,
             Side:'',
-            location: ["location 1","location2","location3" ,"locatsjidu"],
-          commodity:["com1","com2","com3"],
-          counterParty:["counter1","counter2"]
+            location: [],
+            commodity:[],
+            counterParty:[]
            
 
         };
@@ -31,19 +31,32 @@ export default class EditTradeComponent extends Component {
         console.log(this.state.Side);
 
     }
+
+    componentDidMount() {
+        fetch('http://localhost:8083/locations')
+        .then(res => res.json())
+        .then(data=> {
+            this.setState({location: data});
+        });
+        fetch('http://localhost:8083/commodities')
+        .then(res => res.json())
+        .then(data=> {
+            this.setState({commodity: data});
+        });
+        fetch('http://localhost:8083/counterparties')
+        .then(res => res.json())
+        .then(data=> {
+            this.setState({counterParty: data});
+        });
+    } 
+
     handleChange(event) {
-        console.log(event.target.value);
         this.setState({
           Side: event.target.value
         });
       }
       saveTrade(){
-          console.log(this.commodityName.current.value);
-          console.log(this.counterPartyName.current.value);
-          console.log(this.Price.current.value);
-          console.log(this.quantityName.current.value);
-          console.log(this.locationName.current.value);
-          console.log(this.state.Side);
+         
         //   fetch('http://localhost:8080/api/editTrade', {
         //     method: 'PUT',
         //     body: JSON.stringify({TradeDate:this.state.date, commodity:this.commodityName.current.value,
@@ -67,11 +80,9 @@ export default class EditTradeComponent extends Component {
           console.log("inside cancel trade");
       }
       createCommodityItems() {
-        console.log("inside create")
         let items = [];         
-        for (let i = 0; i < this.state.commodity.length; i++) { 
-            console.log(this.state.commodity[i]);            
-             items.push(<option key={i} value={this.state.commodity[i]}>{this.state.commodity[i]}</option>);   
+        for (let i = 0; i < this.state.commodity.length; i++) {             
+             items.push(<option key={i} value={this.state.commodity[i].name}>{this.state.commodity[i].name}</option>);   
             
         }
         return items;
@@ -82,21 +93,19 @@ export default class EditTradeComponent extends Component {
       
    }
    createLocationItems() {
-    console.log("inside create")
     let items = [];         
     for (let i = 0; i < this.state.location.length; i++) { 
                   
-         items.push(<option key={i} value={this.state.location[i]}>{this.state.location[i]}</option>);   
+         items.push(<option key={i} value={this.state.location[i].name}>{this.state.location[i].name}</option>);   
         
     }
     return items;
 }  
 createCounterPartyItems() {
-    console.log("inside create")
     let items = [];         
     for (let i = 0; i <this.state.counterParty.length; i++) { 
              
-         items.push(<option key={i} value={this.state.counterParty[i]}>{this.state.counterParty[i]}</option>);   
+         items.push(<option key={i} value={this.state.counterParty[i].id}>{this.state.counterParty[i].id}</option>);   
       
     }
     return items;

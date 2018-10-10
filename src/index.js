@@ -16,10 +16,10 @@ var wrapper = <div>
      <NavBarComponent/>
      <MarketDetails/>
      <SearchComponent/>
-     <div className="something">
+     {/* <div className="something">
      <TableOneComponent />
     <CreateTradeComponent/>
-     </div>
+     </div> */}
      
     
    
