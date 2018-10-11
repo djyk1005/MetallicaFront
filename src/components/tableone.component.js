@@ -9,91 +9,21 @@ export default class TradeTable extends Component {
     super();
     this.state = {
       showComponent: false,
-      currenttrade:[ {"tradeid":1,
-      "Tradedate": "15/6/2018 ",
-      "Commodity": "gold",
-      "Side": "sell",
-      "Qty": "5000",
-      "price": "600000",
-      "Counterparty": "BALCO",
-      "Location": "bangalore",
-      "TradeStatus":"Open",}],
+      currenttrade:[],
      
-      tradedata: [
-
-        {
-          "tradeid":1,
-          "Tradedate": "15/6/2018 ",
-          "Commodity": "gold",
-          "Side": "sell",
-          "Qty": "5000",
-          "price": "600000",
-          "Counterparty": "BALCO",
-          "Location": "bangalore",
-          "TradeStatus":"Open",
-        },
-        {   "tradeid":2,
-            "Tradedate": "15/6/2018 ",
-            "Commodity": "gold",
-            "Side": "sell",
-            "Qty": "5001",
-            "price": "600001",
-            "Counterparty": "BALCO",
-            "Location": "bangalore",
-            "TradeStatus":"Open",
-          },
-          { "tradeid":3,
-            "Tradedate": "15/6/2018 ",
-            "Commodity": "gold",
-            "Side": "buy",
-            "Qty": "5000",
-            "price": "600000",
-            "Counterparty": "BALCO",
-            "Location": "bangalore",
-            "TradeStatus":"Open",
-          },
-          { "tradeid":4,
-            "Tradedate": "15/6/2016",
-            "Commodity": "gold",
-            "Side": "sell",
-            "Qty": "5000",
-            "price": "600000",
-            "Counterparty": "BALCO",
-            "Location": "bangalore",
-            "TradeStatus":"Open",
-          },
-          { "tradeid":5,
-            "Tradedate": "15/6/2017 ",
-            "Commodity": "copper",
-            "Side": "sell",
-            "Qty": "5000",
-            "price": "600000",
-            "Counterparty": "BALCO",
-            "Location": "bangalore", 
-            "TradeStatus":"Open",
-
-        }
-      ]
+      tradedata: []
 
     };
 
   }
     componentDidMount() {
-  
-        // fetch('url for fetching trade table')
-        // .then(res => res.json())
-        // .then(data=> {
-        //     this.setState({tradedata: data});
-        // });
-        
-
-
+ 
     }
 
  
 
   render() {
-
+    
 
 
  
@@ -101,7 +31,7 @@ export default class TradeTable extends Component {
     return (
       
 
- 
+      <div className="something">
       
       <div className="container">
 
@@ -143,7 +73,7 @@ export default class TradeTable extends Component {
                   index={i}
                   key={p.tradeid}
                   {...this.props}
-                  handleCallback = {this.handleClicked.bind(this)}
+                  handleCallback = {this.props.handleCallback}
                 />
 
               }.bind(this)
@@ -157,14 +87,15 @@ export default class TradeTable extends Component {
 
         </table>
 
-        {this.state.showComponent ?
-      <DisplayTradeComponent
-      trade={this.state.currenttrade}
-      /> :
-      null
-   }
 
 
+        
+
+
+      </div>
+
+      <CreateTradeComponent
+      handleCallback = {this.props.handleCallback} />
       </div>
      
       
@@ -177,15 +108,7 @@ export default class TradeTable extends Component {
 
   }
 
- 
-  handleClicked(returnval,rettrade) {
-    this.setState({
-      showComponent: true,
-      currenttrade:rettrade
-    });
-    
 
-  }
 
 
 }

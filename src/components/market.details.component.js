@@ -10,7 +10,7 @@ export default class MarketDetails extends Component {
     }
     
     fetchMarketData(){
-        fetch('http://localhost:8084/data')
+        fetch('http://localhost:8083/data')
             .then(res => res.json())
             .then(data=> {
                 this.setState({mydata: data});
@@ -18,7 +18,7 @@ export default class MarketDetails extends Component {
 
     }
      componentDidMount() {
-        fetch('http://localhost:8084/data', {
+        fetch('http://localhost:8083/data', {
             method: 'POST'
             });
         this.fetchMarketData();

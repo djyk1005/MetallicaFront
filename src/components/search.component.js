@@ -14,7 +14,8 @@ export default class SearchComponent extends Component {
         location: [],
         commodity:[],
         counterParty:[],
-        trades:[]   
+        trades:[],   
+        Side:""
         };
         this.startDate = React.createRef();
         this.endDate = React.createRef();
@@ -26,25 +27,25 @@ export default class SearchComponent extends Component {
      
       }
       componentDidMount() {
-        fetch('http://localhost:8083/add', {
+        fetch('http://localhost:8082/add', {
             method: 'POST'
             });
-        fetch('http://localhost:8083/locations')
+        fetch('http://localhost:8082/locations')
         .then(res => res.json())
         .then(data=> {
             this.setState({location: data});
         });
-        fetch('http://localhost:8083/commodities')
+        fetch('http://localhost:8082/commodities')
         .then(res => res.json())
         .then(data=> {
             this.setState({commodity: data});
         });
-        fetch('http://localhost:8083/counterparties')
+        fetch('http://localhost:8082/counterparties')
         .then(res => res.json())
         .then(data=> {
             this.setState({counterParty: data});
         });
-        fetch('http://localhost:8081/trade/findAll')
+        fetch('http://localhost:8084/findAll')
         .then(res => res.json())
         .then(data=> {
             this.setState({trades: data});
@@ -54,6 +55,7 @@ export default class SearchComponent extends Component {
     cleardata(e){
         e.preventDefault();
         document.getElementById("search_entry").reset();
+        this.setState({Side:""})
 
     }
 
@@ -63,8 +65,9 @@ export default class SearchComponent extends Component {
         let endDate = this.endDate.current.value;
         let comm = this.commodityName.current.value;
         let cP = this.counterPartyName.current.value; 
-        let loc = this.locationName.current.value;   
-        fetch('http://localhost:8081/trade/search', {
+        let loc = this.locationName.current.value;
+        let side = this.state.Side;   
+        fetch('http://localhost:8084/search', {
             method: 'POST',
             body: JSON.stringify({
                 startDate:(startDate === "")?null:startDate,
@@ -72,9 +75,11 @@ export default class SearchComponent extends Component {
                 comm:(comm === "")?null:comm,
                 counterParty:(cP === "")?null:cP, 
                 loc:(loc === "")?null:loc,
+                side: (side==="")?null:side
                 }),
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                "Accept": "application/json"
             },
         }).then(res=> res.json())
         .then(data=> {
@@ -103,6 +108,11 @@ export default class SearchComponent extends Component {
     }
     return items;
 }  
+handleChange(event) {
+    this.setState({
+      Side: event.target.value
+    });
+  }
 createCounterPartyItems() {
     let items = [];         
     for (let i = 0; i <this.state.counterParty.length; i++) {  
@@ -171,20 +181,9 @@ TDate() {
                                 Side
 
                                 <div>
-
-                                    <label className="checkbox-inline">
-
-                                        <input ref={this.buyVal} type="checkbox" value=""  />Buy
-
-                                    </label>
-
-                                    <label className="checkbox-inline">
-
-                                        <input ref={this.sellVal} type="checkbox" value="" />Sell
-
-                                     </label>
-
-                                </div>
+                                <label><input  type="radio" name="Buy" value ="BUY" checked={this.state.Side === "BUY"} onChange={this.handleChange.bind(this)}  />Buy</label>
+                                <label> <input  type="radio" name="Sell" value="SELL" checked={this.state.Side === "SELL"} onChange={this.handleChange.bind(this)} />Sell</label>
+                                </div>  
 
                             </div>
 
@@ -245,10 +244,10 @@ TDate() {
             </div>
 
             </form>
-            <div className="something">
-            <TableOneComponent trades={this.state.trades}/>
-            <CreateTradeComponent />
-             </div>
+            
+            <TableOneComponent trades={this.state.trades}  handleCallback = {this.handleClicked.bind(this)} />
+            
+            
             </div>
 
 
@@ -263,4 +262,15 @@ TDate() {
 
     }
 
+    handleClicked(rettrade) {
+        this.setState({
+          trades:rettrade
+        });
+        
+    
+      }
+
 }
+
+
+
